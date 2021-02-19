@@ -331,6 +331,7 @@ $('button#pac').click(function() {
 
 $('a#dpost').click(function () {
   var id = $(this).attr('did');
+  console.log(id);
   var data = {id:id};
   var url = "Edit?action=post&task=delete";
   callAjax(data,url, function handleData(output) {

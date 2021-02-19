@@ -101,6 +101,36 @@ if (isset($isEditable)) {
 <script src="<?=base_url('assets/front/jquery-3.5.1.min.js')?>"></script>
 <script src="<?=base_url('assets/front/materialize.min.js')?>"></script>
 <script src="<?=base_url('assets/front/masonry.pkgd.js')?>"></script>
+<script type="text/javascript">
+function masonryNew() {
+  var _width = $(window).width();
+  var reg = new RegExp("px", "g");
+  $(".img-list").each(function () {
+    var imgLength = $(this).find(".img-show").find("img").length;
+    if (imgLength != 0) {
+      var sqlimgWidth = 300;
+      var TimgWidth = $(this).find(".img-part").find("img").css("width");
+      var TimgWidthNum = TimgWidth.replace(reg, "");
+      var thanNum = (TimgWidthNum / sqlimgWidth).toFixed(2);
+      var TimgHeigth = $(this).find(".img-show").css("height");
+      var TimgHeigthNum = TimgHeigth.replace(reg, "");
+      var TdivHeight = TimgHeigthNum;
+      var sheight = TdivHeight + "px";
+      $(this).find(".img-show").css("height", sheight);
+      var $masList = $('#masList');
+      $masList.masonry({
+        itemSelector: '.list-item',
+        singleMode: true,
+        isAnimated: true,
+        resizeable: true,
+        // fitWidth: true
+      });
+    }
+  });
+}
+
+masonryNew();
+</script>
 <?php $fiit =& get_instance();?>
 <script type="text/javascript">
     function logfun(){
@@ -194,67 +224,7 @@ if (isset($isEditable)) {
       document.getElementById("logsys").innerHTML = html;
     }
     var isLoged = "<?=$fiit->isUser()?>";
-   // document.addEventListener('DOMContentLoaded', function () {
-   //   var elems = document.querySelectorAll('.sidenav');
-   //   var instances = M.Sidenav.init(elems);
-   // });
-   // document.addEventListener('DOMContentLoaded', function () {
-   //   var elems = document.querySelectorAll('select');
-   //   var instances = M.FormSelect.init(elems);
-   // });
-   // document.addEventListener('DOMContentLoaded', function() {
-   //    var elems = document.querySelectorAll('.modal');
-   //    var instances = M.Modal.init(elems);
-   //  });
-   // $('.modal').modal();
-</script>
-<script masnory="script">
-  // $('#masList').masonry({
-  //   itemSelector: '.list-item',
-  //   singleMode: true,
-  //   isAnimated: true,
-  //   resizeable: true,
-  // });
-
-// $(document).ready(function () {
-//   $(".img-list").each(function () {
-//     var height = $(this).find(".img-show").find('.imgmain').css("height");
-//     var et = height.slice(0, -2)
-//     var fheight = Math.round(et)+ 'px';
-//     // var fh = (fheight-20) + 'px';
-//     // console.log(fheight);
-//     $(this).find(".img-show").css("height", fheight);
-//   });
-// });
- function masonryNew() {
-   var _width = $(window).width();
-   var reg = new RegExp("px", "g");
-   $(".img-list").each(function () {
-     var imgLength = $(this).find(".img-show").find("img").length;
-     if (imgLength != 0) {
-       var sqlimgWidth = 300;
-       var TimgWidth = $(this).find(".img-part").find("img").css("width");
-       var TimgWidthNum = TimgWidth.replace(reg, "");
-       var thanNum = (TimgWidthNum / sqlimgWidth).toFixed(2);
-       var TimgHeigth = $(this).find(".img-show").css("height");
-       var TimgHeigthNum = TimgHeigth.replace(reg, "");
-       var TdivHeight = (TimgHeigthNum * thanNum).toFixed(2);
-       var sheight = TdivHeight + "px";
-       $(this).find(".img-show").css("height", TimgHeigth);
-       var $masList = $('#masList');
-       $masList.masonry({
-         itemSelector: '.list-item',
-         singleMode: true,
-         isAnimated: true,
-         resizeable: true,
-         // fitWidth: true
-       });
-     }
-   });
- }
- 
- masonryNew();
-
+    $('.modal').modal();
 </script>
 <!-- Google Auto Login -->
 <script src="https://accounts.google.com/gsi/client" async defer></script>

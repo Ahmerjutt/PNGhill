@@ -38,7 +38,7 @@
   <?php $Info = json_decode($value->fdata);?>
   <div class="list-item img-list">
     <div class="img-list-pd">
-      <div class="img-show" style="background:url(./assets/imgshow_bg.png) repeat">
+      <div class="img-show" style="min-height:200px;height: auto;background:url(./assets/imgshow_bg.png) repeat">
         <a href="<?=base_url('freepng/'.$value->slug)?>"class="img-part">
           <img class="lazy2 imgmain" src="<?=$value->image_path?>" data-original="<?=$value->image_path?>">
           <div class="img-bg"></div>
