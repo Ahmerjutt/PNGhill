@@ -38,7 +38,7 @@ class Checks extends CI_Model {
         return $this->db->get($table);
         break;
       case 'recents':
-        $this->db->limit(9);
+        $this->db->limit(12);
         $this->db->order_by('ID', "DESC");
         return $this->db->get($table);
         break;

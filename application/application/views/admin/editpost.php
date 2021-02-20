@@ -1,4 +1,7 @@
 <?php 
+if ($post->num_rows() == 0) {
+  redirect(base_url('admin-panel/posts'));
+}
    $chain =array();
    foreach ($cats->result() as $key => $value) {
      if($value->parent != ''){
@@ -123,7 +126,7 @@
                </div>
             </div>
             <a href="#" did="<?=$epost->ID?>" class="btn waves-effect" style="margin-bottom:20px;" id="Update" did="<?=$epost->ID?>">Update</a>
-            <a href="#" class="btn waves-effect blue-grey darken-1" style="margin-bottom:20px;" id="Draft">Draft</a>
+            <a id="dpost" did="<?=$epost->ID?>" class="btn waves-effect red darken-1" style="margin-bottom:20px;" id="Draft">Delete</a>
             <div class="left-align cats col s12" id="workWith">
                <label>
                <input type="checkbox" value="EPS" class="filled-in" <?=($epost->workWith == 'EPS')?'checked':''?>/><span>EPS</span>

@@ -26,7 +26,7 @@
     <?php $Info = json_decode($value->fdata);?>
     <div class="list-item img-list">
       <div class="img-list-pd">
-        <div class="img-show" style="height: auto;	background: url(./assets/imgshow_bg.png) repeat">
+        <div class="img-show" style="min-height:200px;height:auto;background: url(../assets/imgshow_bg.png) repeat">
           <a href="<?=base_url('freepng/'.$value->slug)?>"
             class="img-part">
             <img class="lazy2"
@@ -45,7 +45,7 @@
         </div>
         <div class="img-detail">
           <h3 class="img-detail-title">
-            <a href="<?=$value->slug?>" style="text-transform:capitalize"><?=$value->title?></a></h3>
+            <a href="<?=$value->slug?>" style="text-transform:capitalize" class="truncate"><?=$value->title?></a></h3>
           <div class="pic-info clearfix">
             <p class="info-title fl" style="margin: 0px;padding: 0px;"><?=$Info->image_width .'*'. $Info->image_height?></p>
             <div class="download-info fr">

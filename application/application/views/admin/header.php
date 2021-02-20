@@ -205,14 +205,13 @@
                      <a href="<?=base_url('admin-panel/quickpost')?>" class="collapsible-header">Quick Post</a>
                   </li>
                   <li class="bold waves-effect">
-                     <a class="collapsible-header">Posts<i class="material-icons chevron">chevron_left</i></a>
-                     <div class="collapsible-body">
-                        <ul>
-                          <li><a href="<?=base_url('admin-panel/posts')?>" class="waves-effect" id="nvlinks">All Post<i class="material-icons">select_all</i></a></li>
-                           <!-- <li><a href="admin-panel/add/post" class="waves-effect" id="nvlinks">Add Post<i class="material-icons">add_box</i></a></li> -->
-                           <li><a href="<?=base_url('admin-panel/add/category')?>" class="waves-effect" id="nvlinks">Add Category<i class="material-icons">add</i></a></li>
-                        </ul>
-                     </div>
+                     <a href="<?=base_url('admin-panel/posts')?>" class="collapsible-header">All Post<i class="material-icons">select_all</i></a>
+                  </li>
+                  <li class="bold waves-effect">
+                     <a href="<?=base_url('admin-panel/add/post')?>" class="collapsible-header">Add Post<i class="material-icons">add_box</i></a>
+                  </li>
+                  <li class="bold waves-effect">
+                     <a href="<?=base_url('admin-panel/add/category')?>" class="collapsible-header">Categorys<i class="material-icons">add_box</i></a>
                   </li>
                </ul>
             </li>

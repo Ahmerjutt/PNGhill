@@ -1,4 +1,4 @@
-var url = window.location.origin + '/git/PNGhill/application/';
+var url = window.location.origin + '/';
 var aurl = window.location.href;
 $('.chips').chips();
 $('.modal').modal();
@@ -339,7 +339,8 @@ $('a#dpost').click(function () {
     if(returned.action == true){
       loader(false);
       toast('Post Deleted Successfully');
-      location.reload();
+      console.log(aurl);
+      location.replace(aurl);
     }else{
       toast(returned.msg);
       loader(false);

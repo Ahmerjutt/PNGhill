@@ -60,7 +60,7 @@ $this->load->model('checks');
                 <div class="mainFooter"><br>
                   <?php if ($value->tags != ''): ?>
                     <blockquote class="headfp">Tags</blockquote>
-                    <div class="tags" style="padding:0px;overflow:auto;"><p style="margin:0px;">
+                    <div class="tags" style="padding:0px;overflow:auto;max-height:120px"><p style="margin:0px;">
                       <?php $variable = explode(',',$value->tags) ?>
                       <?php foreach ($variable as $key => $tag): ?>
                         <a href="<?=base_url('search?q='). $tag?>" class="hover-effect"><?=$tag?></a>
@@ -148,7 +148,7 @@ $this->load->model('checks');
     <?php $Info = json_decode($value->fdata);?>
     <div class="list-item img-list">
       <div class="img-list-pd">
-        <div class="img-show" style="height: auto;	background: url(../assets/imgshow_bg.png) repeat">
+        <div class="img-show" style="min-height:200px;height:auto;height: auto;	background: url(../assets/imgshow_bg.png) repeat">
           <a href="<?=base_url('freepng/'.$value->slug)?>"
             class="img-part">
             <img class="lazy2"
@@ -167,7 +167,7 @@ $this->load->model('checks');
         </div>
         <div class="img-detail">
           <h3 class="img-detail-title">
-            <a href="<?=$value->slug?>" style="text-transform:capitalize"><?=$value->title?></a></h3>
+            <a href="<?=$value->slug?>" style="text-transform:capitalize" class="truncate"><?=$value->title?></a></h3>
           <div class="pic-info clearfix">
             <p class="info-title fl" style="margin: 0px;padding: 0px;"><?=$Info->image_width .'*'. $Info->image_height?></p>
             <div class="download-info fr">
