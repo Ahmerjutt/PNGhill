@@ -26,9 +26,9 @@
               </div>
               <div class="">
                 <footer class="items-right leading-none p-2 mt-1 md:p-4 text-right">
-                   <a class="flex items-right no-underline hover:underline text-black" href="#">
-                      <img alt="Placeholder" class="block rounded-full w-5" src="https://i.picsum.photos/id/59/32/32.jpg?hmac=hGkW1Qf663ttZ8NO0ppmWOlT4nkclHGkAQjEltlgKQI"> 
-                      <p class="ml-2 mt-0.5 text-gray bold text-gray-600 dark:text-light"> Author Name </p>
+                   <a class="flex items-right no-underline hover:underline text-black text-right" href="#">
+                      <img alt="Placeholder" class="block rounded-full w-5" src="<?=$post->u_img?>"> 
+                      <p class="ml-2 mt-0.5 text-gray bold text-gray-600 dark:text-light text-right"> <?=$post->u_name?></p>
                    </a>
                    <div class="flex items-center mt-2 no-underline text-gray-400 hover:text-red-dark justify-between text-right block float-right" href="#"> 
                      <span class="text-gray-400 text-sm mr-2 mt-0.5 fontt dark:text-light-400"><?=$post->views?></span>

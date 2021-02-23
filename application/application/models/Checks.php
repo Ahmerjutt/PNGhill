@@ -29,8 +29,15 @@ class Checks extends CI_Model {
   public function Fetch($table,$where,$by,$slimit=0){
     switch ($where) {
       case 'all':
-        $this->db->order_by($by, "DESC");
-        return $this->db->get($table);
+        if ($slimit == 'wa') {
+          $this->db->select('*');
+          $this->db->from('posts');
+          $this->db->join('sigma', 'posts.post_author = sigma.UID');
+          return $query = $this->db->get();
+        }else{
+          $this->db->order_by($by, "DESC");
+          return $this->db->get($table);  
+        }
         break;
       case 'homeposts':
         $this->db->limit(20);

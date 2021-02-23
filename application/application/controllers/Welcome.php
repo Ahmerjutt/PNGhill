@@ -464,7 +464,7 @@ class Welcome extends CI_Controller {
 		$this->load->model('checks');
 		switch ($url) {
 			case '/posts':
-					$data['posts'] = $this->checks->Fetch('posts','all','ID','wc');
+					$data['posts'] = $this->checks->Fetch('posts','all','ID','wa');
 					$this->load->view("anew/header");
 				  $this->load->view('anew/posts',$data);
 					$this->load->view('anew/footer');
