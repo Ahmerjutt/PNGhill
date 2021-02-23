@@ -794,12 +794,8 @@ class Welcome extends CI_Controller {
 		} if ($_POST['featuredImage'] == '') {
 			echo json_encode(array('action' => false,'msg' => 'featured cannpt be empty'));exit();
 		}
-		if ($this->getCurrentUser()) {
-			if ($this->getCurrentUser()->num_rows() > 0) {
-				$data['post_author'] = $this->getCurrentUser()->result()[0]->UID;
-			}else{
-				echo json_encode(array('action' => false,'msg' => "Your'e Logged out "));exit();
-			}
+		if (!empty($this->getCurrentUser())) {
+			$post['post_author'] = $this->getCurrentUser()[0]->UID;
 		}else{
 			echo json_encode(array('action' => false,'msg' => "Your'e Logged out "));exit();
 		}
