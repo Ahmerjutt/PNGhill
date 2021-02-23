@@ -403,7 +403,7 @@ class Welcome extends CI_Controller {
 		$config['encrypt_name'] = TRUE;
 		$config['remove_spaces'] = TRUE;
 		$this->load->library('upload', $config);
-	    if ($this->upload->do_upload('filename')) {
+	    if ($this->upload->do_upload('img')) {
 				$data= $this->upload->data();
 				$img['d_link'] = 'uploads/xcon/'.$data['file_name'];
 				$img['d_date'] = date('Y-m-d');
@@ -415,7 +415,7 @@ class Welcome extends CI_Controller {
 					exit();
 				}
 			}else{
-				echo json_encode(array('msg' => 'file not uploaded try again'));exit();
+				echo json_encode(array('action' => false,'msg' => 'file not uploaded try again'));exit();
 			}
 	}
 	public function changezip(){
@@ -464,39 +464,69 @@ class Welcome extends CI_Controller {
 		$this->load->model('checks');
 		switch ($url) {
 			case '/posts':
-					$data['posts'] = $this->checks->Fetch('posts','all','ID');
-					$this->load->view("admin/header");
-				  $this->load->view('admin/allposts',$data);
-					$this->load->view('admin/footer');
+					$data['posts'] = $this->checks->Fetch('posts','all','ID','wc');
+					$this->load->view("anew/header");
+				  $this->load->view('anew/posts',$data);
+					$this->load->view('anew/footer');
 				break;
 			case '/add/post':
 					$data['cats'] = $this->checks->Fetch('categories','all','CID');
-					$data['singlec'] = $this->checks->Fetch('categories',array('srole'=> false),'CID');
-					$this->load->view("admin/header");
-					$this->load->view('admin/addpost',$data);
-					$this->load->view('admin/footer');
+					$this->load->view("anew/header");
+					$this->load->view('anew/addpost',$data);
+					$this->load->view('anew/footer');
 				break;
 			case '/quickpost':
 					$data['cats'] = $this->checks->Fetch('categories','all','CID');
-					$data['singlec'] = $this->checks->Fetch('categories',array('srole'=> false),'CID');
-					$this->load->view("admin/header");
-					$this->load->view('admin/quickPost',$data);
-					$this->load->view('admin/footer');
+					$this->load->view("anew/header");
+					$this->load->view('anew/pngtree',$data);
+					$this->load->view('anew/footer');
 				break;
-			case '/add/category':
-					$data['cats'] = $this->checks->Fetch('categories','all','CID');
-					$data['dropdown'] = $this->checks->Fetch('categories',array('role'=>'parent'),'CID');
-					$data['singlec'] = $this->checks->Fetch('categories',array('srole'=> false),'CID');
-					$this->load->view("admin/header");
-					$this->load->view('admin/addcat', $data);
-					$this->load->view('admin/footer');
-				break;
+				case '/users':
+						$data['users'] = $this->checks->Fetch('sigma','all','UID');
+						$this->load->view("anew/header");
+						$this->load->view('anew/users', $data);
+						$this->load->view('anew/footer');
+					break;
 			default:
-					$this->load->view("admin/header");
-				  $this->load->view('admin/index');
-					$this->load->view('admin/footer');
+					$this->load->view("anew/header");
+				  $this->load->view('anew/index');
+					$this->load->view('anew/footer');
 				break;
 		}
+	}
+	public function categories(){
+		$this->load->model('checks');
+		$data['cats'] = $this->checks->Fetch('categories','all','CID');
+		if (isset($_GET['edit'])) {
+			$id = $_GET['edit'];
+			$data['category'] = $this->checks->Fetch('categories',array('CID' => $id),'CID');
+			$data['edit'] = TRUE;
+		}else {
+			$data['edit'] = FALSE;
+		}
+		$this->load->view("anew/header");
+		$this->load->view('anew/categories', $data);
+		$this->load->view('anew/footer');
+	}
+	public function ecat(){
+		$id = $_POST['id'];
+		$this->load->model('checks');
+		if ($_POST['cname'] != '') {
+			$slug = strtolower($_POST['cslug']);
+			$replaced = str_replace(' ', '-', $slug);
+			$data['cslug'] = $replaced;
+			$data['cname'] = $_POST['cname'];
+			$data['desce']  = $_POST['desc'];
+			$data['m_title']  = $_POST['ctitle'];
+			if ($this->checks->Update('categories',$data,array('CID' => $id))) {
+				redirect(base_url('admin-panel/add/category?msg=success'));
+			}
+		}else{
+				redirect(base_url('admin-panel/add/category?msg=error'));
+		}
+		$this->load->view("anew/header");
+		$this->load->view('anew/categories', $data);
+		$this->load->view('anew/footer');
 	}
 	// Publish Data
 	public function publish(){
@@ -505,6 +535,11 @@ class Welcome extends CI_Controller {
 			case 'post':
 				if($_POST['title'] == ''){
 						echo json_encode(array('action' => false,'msg' => 'title not be empty'));exit();
+				}
+				if (!empty($this->getCurrentUser())) {
+					$post['post_author'] = $this->getCurrentUser()[0]->UID;
+				}else{
+					echo json_encode(array('action' => false,'msg' => "Your'e Logged out "));exit();
 				}
 				if (isset($_FILES['file'])) {
 					date_default_timezone_set('Asia/Karachi');
@@ -557,23 +592,17 @@ class Welcome extends CI_Controller {
 				break;
 			case 'category':
 				if ($_POST['cname'] != '') {
-					$slug = strtolower($_POST['cname']);
+					$slug = strtolower($_POST['cslug']);
 					$replaced = str_replace(' ', '-', $slug);
+					$this->load->model('checks');
+					if ($this->checks->Fetch('categories',array('cslug' => $replaced),'CID')->num_rows() > 0) {
+						redirect(base_url('admin-panel/add/category?msg=change slug link'));
+					}
 					$this->load->model('checks');
 					$data['cslug'] = $replaced;
 					$data['cname'] = $_POST['cname'];
 					$data['desce']  = $_POST['desc'];
-					$data['role']  = 'parent';
-					$data['srole']  = false;
-					if ($_POST['parent']!= '') {
-						$data['parent']  = $_POST['parent'];
-						$p = $this->checks->Fetch('categories',array('CID'=> $data['parent']),'');
-						$data['role']  = 'book';
-						$data['cslug'] = $p->result()[0]->cslug .'/'. $replaced;
-						$parent['srole'] = true;
-						$where = array('CID'=>$p->result()[0]->CID);
-						$this->checks->Update('categories',$parent,$where);
-					}
+					$data['m_title']  = $_POST['ctitle'];
 					if ($this->checks->Upload($data,'categories')) {
 						redirect(base_url('admin-panel/add/category'));
 					}
@@ -587,37 +616,10 @@ class Welcome extends CI_Controller {
 	public function Edit(){
 	  $action = $_GET['action'];
 		switch ($action) {
-			case 'category':
-					$ID = $_GET['id'];
-					$this->load->model('checks');
-					if ($_GET['task'] == 'edit') {
-						$data['dropdown'] = $this->checks->Fetch('categories',array('role'=>'parent'),'CID');
-						$data['category'] = $this->checks->Fetch('categories',array('CID'=> $ID),'CID');
-						$this->load->view("admin/header");
-						$this->load->view('admin/editcat', $data);
-						$this->load->view('admin/footer');
-					}elseif($_GET['task'] == 'update'){
-						$slug = strtolower($_GET['cname']);
-						$replaced = str_replace(' ', '-', $slug);
+				case 'category':
+					if($_GET['task'] == 'delete'){
 						$this->load->model('checks');
-						$data['cslug'] = $replaced;
-						$data['cname'] = $_GET['cname'];
-						$data['desce']  = $_GET['desc'];
-						$data['role']  = 'parent';
-						if (isset($_GET['parent'])) {
-							$data['parent']  = $_GET['parent'];
-							$p = $this->checks->Fetch('categories',array('CID'=> $data['parent']),'');
-							$data['role']  = 'book';
-							$data['cslug'] = $p->result()[0]->cslug .'/'. $replaced;
-							$parent['srole'] = true;
-							$where = array('CID'=>$p->result()[0]->CID);
-							$this->checks->Update('categories',$parent,$where);
-						}
-						if ($this->checks->Update('categories',$data,array('CID'=>$ID))) {
-							redirect(base_url('admin-panel/edit?action=category&msg=updates&task=edit&id='.$ID));
-						}
-					}elseif($_GET['task'] == 'delete'){
-						$this->load->model('checks');
+						$ID = $_GET['id'];
 						if ($this->checks->Delete('categories',array('CID'=>$ID))) {
 							redirect(base_url('admin-panel/add/category'));
 						}
@@ -647,11 +649,10 @@ class Welcome extends CI_Controller {
 						$this->load->model('checks');
 						$ID = $_GET['id'];
 						$data['cats'] = $this->checks->Fetch('categories','all','CID');
-						$data['singlec'] = $this->checks->Fetch('categories',array('srole'=> false),'CID');
 						$data['post'] = $this->checks->Fetch('posts',array('ID'=> $ID),'ID');
-						$this->load->view("admin/header");
-						$this->load->view('admin/editpost', $data);
-						$this->load->view('admin/footer');
+						$this->load->view("anew/header");
+						$this->load->view('anew/editpost', $data);
+						$this->load->view('anew/footer');
 					}elseif($_GET['task']=='update'){
 						$this->load->model('checks');
 						$ID = $_POST['id'];
@@ -660,11 +661,12 @@ class Welcome extends CI_Controller {
 						if ($cats != '') {
 							$post['category'] = implode(',',$cats);
 						}
-						$post['tags'] = ($_POST['hash']=='')?'':implode(',',$_POST['hash']);
+						$post['tags'] = $_POST['hash'];
 						$post['workWith'] = ($_POST['workWith']=='')?'':implode(',',$_POST['workWith']);
 						$post['mTitle'] = $_POST['mTitle'];
 						$post['mTags'] = $_POST['mTags'];
 						$post['mDesc'] = $_POST['mDesc'];
+						$post['dlink_zip'] = $_POST['ziplink'];
 						$flug = $this->checks->Fetch('posts',array('ID'=> $ID),'ID');
 						$returnedData = base_url('freepng/'.$flug->result()[0]->slug);
 						if ($this->checks->Update('posts',$post,array('ID'=> $ID)) == true) {
@@ -760,8 +762,11 @@ class Welcome extends CI_Controller {
 	public function qp(){
 		$this->load->model('checks');
 	  $url = $_GET['link'];
+		if ($url == '') {
+			echo json_encode(array('action' => false,'msg' => "url required"));exit();
+		}
 		$da=$this->checks->Fetch('posts',array('post_clink'=> $url),'');
-		if ($this->check_internet()) {
+		if ($this->check_internet() ) {
 			if ($da->num_rows() > 0) {
 				echo json_encode(array('action' => false,'msg' => 'Already Posted'));exit();
 			}else{
@@ -788,6 +793,15 @@ class Welcome extends CI_Controller {
 				echo json_encode(array('action' => false,'msg' => 'title not be empty'));exit();
 		} if ($_POST['featuredImage'] == '') {
 			echo json_encode(array('action' => false,'msg' => 'featured cannpt be empty'));exit();
+		}
+		if ($this->getCurrentUser()) {
+			if ($this->getCurrentUser()->num_rows() > 0) {
+				$data['post_author'] = $this->getCurrentUser()->result()[0]->UID;
+			}else{
+				echo json_encode(array('action' => false,'msg' => "Your'e Logged out "));exit();
+			}
+		}else{
+			echo json_encode(array('action' => false,'msg' => "Your'e Logged out "));exit();
 		}
 		$slug = strtolower($_POST['title']);
 		$replaced = str_replace(' ', '_', $slug) .'_'.  rand(1111,999999) . '.html';

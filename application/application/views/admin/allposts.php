@@ -19,7 +19,7 @@
               <td style="max-width:100px;overflow:hidden"> <a target="_blank" href="<?=base_url('freepng/'.$post->slug)?>"><?=$post->slug?></a> </td>
               <td style="width:150px">
                 <a href="<?=base_url('admin-panel/edit?action=post&task=edit&id='.$post->ID)?>" class="btn-floating btn-large waves-effect waves-light orange btn-small"><i class="material-icons">edit</i></a>
-                <a id="dpost" did="<?=$post->ID?>" class="btn-floating btn-large waves-effect waves-light red btn-small"><i class="material-icons">delete</i></a>
+                <a id="dpost" href="" did="<?=$post->ID?>" class="btn-floating btn-large waves-effect waves-light red btn-small"><i class="material-icons">delete</i></a>
                 <a target="_blank" href="<?=base_url('freepng/'.$post->slug)?>" class="btn-floating btn-large waves-effect waves-light  cyan darken-4 btn-small"><i class="material-icons">open_in_new</i></a>
               </td>
             </tr>

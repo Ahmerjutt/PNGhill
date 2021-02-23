@@ -1,17 +1,17 @@
 var url = window.location.origin + '/';
 var aurl = window.location.href;
-$('.chips').chips();
-$('.modal').modal();
-$('#table_id').DataTable();
-$('.materialboxed').materialbox();
-// add active class to sidenav
-$('a#nvlinks').each(function(){
-  var href = $(this).attr('href');
-  if(href == aurl){
-    $(this).addClass('active');
-    $(this).parent().parent().parent().parent().addClass('active');
-  }
-});
+// $('.chips').chips();
+// $('.modal').modal();
+// $('#table_id').DataTable();
+// $('.materialboxed').materialbox();
+// // add active class to sidenav
+// $('a#nvlinks').each(function(){
+//   var href = $(this).attr('href');
+//   if(href == aurl){
+//     $(this).addClass('active');
+//     $(this).parent().parent().parent().parent().addClass('active');
+//   }
+// });
 // Check All posts
 var clicked = false;
 $("#checkall").on("click", function() {
@@ -33,6 +33,7 @@ function loader(action){
     $('.sidenav-overlay').hide();
   }
 }
+var svg = '<svg class="animate-spin h-5 w-auto mr-3" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>';
 // Ajax Function
 function callAjax(data,urle,handleData) {
   return $.ajax({
@@ -57,9 +58,9 @@ function UploadImage(data,urle,handleData) {
   });
 }
 // Toast Function
-function toast(msg){
-  M.toast({html: msg});
-}
+// function toast(msg){
+//   M.toast({html: msg});
+// }
 
 // Preview Featured Image
 $('#img').change(function () {
@@ -454,8 +455,9 @@ $('#imgeww').change(function () {
   $('#prevImage').attr('src',img)
 })
 
-$('a#checkit').click(function (e) {
-  loader(true);
+$('button#checkit').click(function (e) {
+  var html = svg + '<span>Checking..</span>'
+  $(this).html(html);
   var link = $('input#linkww').val();
   $.ajax({
     url : url+'Welcome/qp?link='+link,
@@ -466,10 +468,12 @@ $('a#checkit').click(function (e) {
         $('#title').val(returned.title);
         var ss =$('#tagsw').val(returned.tags);
         $('main').removeClass('ddiv');
-        loader(false);
+        var html = svg + '<span>Checked</span>'
+        $(this).html(html);
       }else{
         toast(returned.msg);
-        loader(false);
+        var html = svg + '<span>Error</span>'
+        $(this).html(html);
       }
     }
   });

@@ -1,8 +1,7 @@
-<?php 
-  if (!isset($_COOKIE[md5(base_url())])) {
-    redirect(base_url('admin-panel/login'));exit();
-  }
- ?>
+<?php if (!isset($_COOKIE[md5(base_url())])) {
+   redirect(base_url('admin-panel/login'));exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
    <head>
