@@ -283,7 +283,7 @@ class Welcome extends CI_Controller {
 		  $config['image_library'] = 'gd2';
 		  $config['source_image'] = $path;
 		  $config['create_thumb'] = TRUE;
-			$config['new_image'] = './uploads/x24/';
+			$config['new_image'] = getcwd().'/uploads/x24/';
 		  $config['quality'] = '80%';
 		  $config['master_dim'] = 'auto';
 		  $this->load->library('image_lib', $config);
@@ -309,7 +309,7 @@ class Welcome extends CI_Controller {
 		  $config['image_library'] = 'gd2';
 		  $config['source_image'] = $path;
 		  $config['create_thumb'] = TRUE;
-			$config['new_image'] = './uploads/x24/';
+			$config['new_image'] = getcwd().'/uploads/x24/';
 		  $config['quality'] = '80%';
 		  $config['master_dim'] = 'auto';
 		  $this->load->library('image_lib', $config);
